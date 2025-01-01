@@ -1,5 +1,5 @@
 use anyhow::Context;
-use github_notifier::github;
+use github_notifier::{config, github};
 
 ///  Runs once, checking the GitHub API for new notifications.
 #[tokio::main]
@@ -8,14 +8,22 @@ async fn main() {
 
     tracing_subscriber::fmt::init();
 
-    let github_token = std::env::var("GITHUB_TOKEN")
-        .context("GITHUB_TOKEN not set")
-        .unwrap();
-    let github_username = std::env::var("GITHUB_USERNAME")
-        .context("GITHUB_USERNAME not set")
-        .unwrap();
-    let github_client =
-        github::GithubClient::new(reqwest::Client::new(), &github_username, &github_token);
+    let args = std::env::args().collect::<Vec<_>>();
+
+    let file_path = if args.len() == 2 {
+        args[1].clone()
+    } else {
+        std::env::var("HOME").unwrap() + "/.config/github-notifier/config.toml"
+    };
+
+    let config = config::Config::load_from_file(&file_path);
+
+    let github_client = github::GithubClient::new(
+        reqwest::Client::new(),
+        &config.github_username,
+        &config.github_token,
+    );
+
     let notifications = match github_client.get_notifications().await {
         Ok(notifications) => notifications,
         Err(err) => {
