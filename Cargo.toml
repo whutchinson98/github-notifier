@@ -1,12 +1,20 @@
 [package]
 name = "github-notifier"
-version = "0.1.0"
-edition = "2021"
+version = "0.0.1"
+edition = "2024"
+authors = ["whutchinson98"]
+description = "A CLI tool to notify github of new commits"
+include = ["src/**/*.rs"]
+categories = ["command-line-utilities"]
+homepage = "https://github.com/whutchinson98/github-notifier"
+repository = "https://github.com/whutchinson98/github-notifier"
+license = "MIT"
+readme = "README.md"
+keywords = ["github", "notification", "cli"]
 
 [dependencies]
 anyhow = "1.0.86"
 dotenv = "0.15.0"
-mockall = "0.12.1"
 reqwest = { version = "0.12.4", features = ["json"] }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"

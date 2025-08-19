@@ -1,16 +1,8 @@
 use get_notifications::Notification;
-#[allow(unused_imports)]
-use mockall::automock;
-
 mod get_notifications;
 
-#[cfg(not(test))]
-pub use GithubClientImpl as GithubClient;
-#[cfg(test)]
-pub use MockGithubClientImpl as GithubClient;
-
 #[derive(Clone, Debug)]
-pub struct GithubClientImpl {
+pub struct GithubClient {
     client: reqwest::Client,
     github_username: String,
     github_token: String,
@@ -18,8 +10,7 @@ pub struct GithubClientImpl {
 
 pub const GITHUB_URL: &str = "https://api.github.com";
 
-#[cfg_attr(test, automock)]
-impl GithubClientImpl {
+impl GithubClient {
     #[tracing::instrument(skip(client), level = "trace")]
     pub fn new(client: reqwest::Client, github_username: &str, github_token: &str) -> Self {
         Self {

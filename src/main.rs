@@ -1,5 +1,5 @@
-use anyhow::Context;
-use github_notifier::{config, github};
+mod config;
+mod github;
 
 ///  Runs once, checking the GitHub API for new notifications.
 #[tokio::main]
@@ -15,6 +15,8 @@ async fn main() {
     } else {
         std::env::var("HOME").unwrap() + "/.config/github-notifier/config.toml"
     };
+
+    tracing::trace!(file_path=?file_path, "loading config");
 
     let config = config::Config::load_from_file(&file_path);
 
