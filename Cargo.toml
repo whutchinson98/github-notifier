@@ -1,6 +1,6 @@
 [package]
 name = "github-notifier"
-version = "0.0.1"
+version = "1.0.0"
 edition = "2024"
 authors = ["whutchinson98"]
 description = "A CLI tool to notify github of new commits"
